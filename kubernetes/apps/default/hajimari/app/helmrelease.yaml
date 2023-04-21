@@ -42,6 +42,7 @@ spec:
           - default
           - flux-system
           - monitoring
+          - storage
     ingress:
       main:
         enabled: true
