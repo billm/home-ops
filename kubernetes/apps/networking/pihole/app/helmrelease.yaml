@@ -1,0 +1,77 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: pihole
+  namespace: networking
+spec:
+  interval: 15m
+  chart:
+    spec:
+      # renovate: registryUrl=https://mojo2600.github.io/pihole-kubernetes/
+      chart: pihole
+      version: 2.12.0
+      sourceRef:
+        kind: HelmRepository
+        name: mojo2600
+        namespace: flux-system
+
+  values:
+    replicaCount: 3
+    image:
+      repository: "pihole/pihole"
+      tag: "2023.03.1"
+      pullPolicy: IfNotPresent
+    strategyType: RollingUpdate
+
+    serviceDns:
+      type: LoadBalancer
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: ${SVC_PIHOLE_ADDR}
+        serviceDhcp:
+      enabled: false
+    https:
+      enabled: false
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      path: /
+      hosts:
+        - &host "pihole.${SECRET_DOMAIN}"
+      tls: true
+      annotations:
+        nginx.ingress.kubernetes.io/whitelist-source-range: |
+          10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+        hajimari.io/icon: mdi:raspberry-pi
+        hajimari.io/url: "https://pihole.${SECRET_DOMAIN}/admin"
+        hajimari.io/group: "networking"
+        hajimari.io/targetBlank: "true"
+        hajimari.io/info: "DNS Server and Ad Blocker"
+    dnsmasq:
+      upstreamServers:
+        - "server=/${SECRET_DOMAIN}/${METALLB_K8S_GATEWAY_ADDR}"
+    probes:
+      liveness:
+        enabled: true
+        initialDelaySeconds: 60
+        failureThreshold: 10
+        timeoutSeconds: 5
+        port: http
+        scheme: HTTP
+      readiness:
+        enabled: true
+        initialDelaySeconds: 60
+        failureThreshold: 3
+        timeoutSeconds: 5
+        port: http
+        scheme: HTTP
+    persistentVolumeClaim:
+      enabled: true
+      existingClaim: pihole-pvc-longhorn
+    admin:
+      existingSecret: pihole-secret
+      passwordKey: adminPassword
+    extraEnvVars:
+      TZ: ${TZ}
+    DNS1: "1.1.1.1"
+    DNS2: "8.8.8.8"
