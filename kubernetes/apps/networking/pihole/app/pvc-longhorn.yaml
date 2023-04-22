@@ -3,7 +3,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: pihole-pvc-longhorn
-  namespace: default
+  namespace: networking
 spec:
   storageClassName: longhorn
   accessModes:
