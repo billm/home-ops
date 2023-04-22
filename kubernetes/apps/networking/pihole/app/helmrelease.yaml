@@ -52,6 +52,7 @@ spec:
     dnsmasq:
       upstreamServers:
         - "server=/${SECRET_DOMAIN}/${METALLB_K8S_GATEWAY_ADDR}"
+        - "server=/ts.ucsecurity.com/192.168.128.129"
     probes:
       liveness:
         enabled: true
