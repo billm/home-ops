@@ -70,9 +70,8 @@ spec:
     persistentVolumeClaim:
       enabled: true
       existingClaim: pihole-pvc-longhorn
-    envFrom:
-      - secretRef:
-          name: pihole-secret
+    # TODO - I gave up, it's private will deal with later
+    adminPassword: "admin"
     extraEnvVars:
       TZ: ${TZ}
     DNS1: "1.1.1.1"
