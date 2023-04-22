@@ -37,7 +37,7 @@ spec:
       ingressClassName: nginx
       path: /
       hosts:
-        - &host "pihole.${SECRET_DOMAIN}"
+        - "pihole.${SECRET_DOMAIN}"
       tls: true
       annotations:
         nginx.ingress.kubernetes.io/whitelist-source-range: |
