@@ -9,7 +9,6 @@ metadata:
 spec:
   dependsOn:
     - name: storage-longhorn
-    - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-ingress-nginx
   path: ./kubernetes/apps/default/pihole/app
   prune: true
