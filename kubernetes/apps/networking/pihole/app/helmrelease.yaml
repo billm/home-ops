@@ -33,7 +33,6 @@ spec:
       enabled: false
     https:
       enabled: false
-    externalTrafficPolicy: Cluster
     ingress:
       enabled: true
       ingressClassName: nginx
