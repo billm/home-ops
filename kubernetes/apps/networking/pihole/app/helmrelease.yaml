@@ -41,7 +41,7 @@ spec:
       hosts:
         - "pihole.${SECRET_DOMAIN}"
       annotations:
-        metallb.universe.tf/address-pool: dns-pool
+        # metallb.universe.tf/address-pool: dns-pool
         nginx.ingress.kubernetes.io/whitelist-source-range: |
           10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
         hajimari.io/icon: mdi:raspberry-pi
