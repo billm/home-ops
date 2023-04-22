@@ -26,12 +26,14 @@ spec:
 
     serviceDns:
       type: LoadBalancer
+      mixedService: true
       annotations:
         metallb.universe.tf/loadBalancerIPs: ${SVC_PIHOLE_ADDR}
-        serviceDhcp:
+    serviceDhcp:
       enabled: false
     https:
       enabled: false
+    externalTrafficPolicy: Cluster
     ingress:
       enabled: true
       ingressClassName: nginx
@@ -68,9 +70,9 @@ spec:
     persistentVolumeClaim:
       enabled: true
       existingClaim: pihole-pvc-longhorn
-    admin:
-      existingSecret: pihole-secret
-      passwordKey: adminPassword
+    envFrom:
+      - secretRef:
+          name: pihole-secret
     extraEnvVars:
       TZ: ${TZ}
     DNS1: "1.1.1.1"
