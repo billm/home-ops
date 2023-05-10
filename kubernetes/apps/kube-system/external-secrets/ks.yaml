@@ -29,7 +29,7 @@ metadata:
 spec:
   dependsOn:
     - name: external-secrets
-    - namespace: kube-system
+      namespace: kube-system
   path: ./kubernetes/apps/kube-system/external-secrets/1password
   prune: true
   sourceRef:
