@@ -28,8 +28,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: external-secrets
-      namespace: kube-system
+    - name: cluster-apps-external-secret
   path: ./kubernetes/apps/kube-system/external-secrets/1password
   prune: true
   sourceRef:
