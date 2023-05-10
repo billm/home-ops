@@ -40,11 +40,11 @@ spec:
       - secretRef:
           name: tailscale-auth
 
-    service:
-      main:
-        ports:
-          http:
-            port: &port 45387
+    # service:
+    #   main:
+    #     ports:
+    #       http:
+    #         port: &port 45387
 
     podSecurityContext:
       runAsUser: 1000
