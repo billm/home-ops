@@ -42,9 +42,10 @@ spec:
 
     service:
       main:
-        ports:
-          http:
-            port: 45387
+        enabled: false
+        # ports:
+        #   http:
+        #     port: 45387
 
     podSecurityContext:
       runAsUser: 1000
