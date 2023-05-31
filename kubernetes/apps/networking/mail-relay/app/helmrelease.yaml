@@ -31,7 +31,7 @@ spec:
       SERVER_HOSTNAME: "${SECRET_SMTP_DOMAIN}"
     envFrom:
       - secretRef:
-        name: sendgrid-apikey-secret
+          name: sendgrid-apikey-secret
     image:
       repository: docker.io/juanluisbaptiste/postfix
       tag: 1.7.1
