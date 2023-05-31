@@ -24,14 +24,19 @@ spec:
       retries: 100
   values:
     env:
-      SMTP_SERVER: smtp.sendgrid.net
-      OVERWRITE_FROM: "${SECRET_SENDGRID_USER_SMTP_RELAY}"
-      SMTP_USERNAME: apikey
-      SMTP_PASSWORD: "${SECRET_SENDGRID_APIKEY_SMTP_RELAY}"
-      SERVER_HOSTNAME: "${SECRET_SMTP_DOMAIN}"
-    envFrom:
-      - secretRef:
-          name: sendgrid-apikey-secret
+      - name: SMTP_SERVER
+        value: smtp.sendgrid.net
+      - name: OVERWRITE_FROM
+        value: "${SECRET_SENDGRID_USER_SMTP_RELAY}"
+      - name: SMTP_USERNAME
+        value: apikey
+      - name: SMTP_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: sendgrid-apikey-secret
+            key: password
+      - name: SERVER_HOSTNAME
+        value: "${SECRET_SMTP_DOMAIN}"
     image:
       repository: docker.io/juanluisbaptiste/postfix
       tag: 1.7.1
