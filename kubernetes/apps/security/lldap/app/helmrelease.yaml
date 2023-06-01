@@ -28,11 +28,6 @@ spec:
       repository: docker.io/nitnelave/lldap
       tag: latest
     env:
-      - name: SMTP_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: sendgrid-apikey-secret
-            key: password
       - name: TZ
         value: "${TIMEZONE}"
       - name: LLDAP_BASE_DN
