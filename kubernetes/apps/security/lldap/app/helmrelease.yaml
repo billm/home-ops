@@ -1,0 +1,88 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app lldap
+  namespace: security
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    image:
+      # https://hub.docker.com/r/nitnelave/lldap
+      repository: docker.io/nitnelave/lldap
+      tag: latest
+    env:
+      - name: SMTP_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: sendgrid-apikey-secret
+            key: password
+      - name: TZ
+        value: "${TIMEZONE}"
+      - name: LLDAP_BASE_DN
+        value: "dc=home,dc=arpa"
+      - name: LLDAP_USER_PASS
+        valueFrom:
+          secretKeyRef: lldap-secrets
+          key: lldap-userpass
+      - name: LLDAP_JWT_SECRET
+        valueFrom:
+          secretKeyRef: lldap-secrets
+          key: lldap-jwt-secret
+    service:
+      main:
+        type: LoadBalancer
+        loadBalancerIP: ${SVC_LLDAP_ADDR}
+        externalIPs:
+          - "${SVC_LLDAP_ADDR}"
+
+        ports:
+          http:
+            port: 17170
+          ldap:
+            enabled: true
+            port: 3890
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: folder-key-network-outline
+        hosts:
+          - host: &host "ldap.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+    persistence:
+      data:
+        enabled: true
+        existingClaim: lldap-pvc-longhorn
+        mountPath: /data
+    # resources:
+    #   requests:
+    #     cpu: 10m
+    #     memory: 100Mi
+    #   limits:
+    #     memory: 500Mi
+    podAnnotations:
+      secret.reloader.stakater.com/reload: *app
