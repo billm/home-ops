@@ -34,12 +34,14 @@ spec:
         value: "dc=home,dc=arpa"
       - name: LLDAP_USER_PASS
         valueFrom:
-          secretKeyRef: lldap-secrets
-          key: password
+          secretKeyRef:
+            name: lldap-secrets
+            key: password
       - name: LLDAP_JWT_SECRET
         valueFrom:
-          secretKeyRef: lldap-secrets
-          key: jwt-secret
+          secretKeyRef:
+            name: lldap-secrets
+            key: jwt-secret
     service:
       main:
         type: LoadBalancer
