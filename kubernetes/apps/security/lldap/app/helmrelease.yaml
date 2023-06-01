@@ -35,11 +35,11 @@ spec:
       - name: LLDAP_USER_PASS
         valueFrom:
           secretKeyRef: lldap-secrets
-          key: lldap-userpass
+          key: password
       - name: LLDAP_JWT_SECRET
         valueFrom:
           secretKeyRef: lldap-secrets
-          key: lldap-jwt-secret
+          key: jwt-secret
     service:
       main:
         type: LoadBalancer
