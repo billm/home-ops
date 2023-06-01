@@ -9,11 +9,7 @@
     ":enablePreCommit",
     ":automergeDigest",
     ":automergeBranch",
-    "github>billm/home-ops//.github/renovate/autoMerge.json5",
-    "github>billm/home-ops//.github/renovate/commitMessage.json5",
-    "github>billm/home-ops//.github/renovate/groups.json5",
-    "github>billm/home-ops//.github/renovate/labels.json5",
-    "github>billm/home-ops//.github/renovate/semanticCommits.json5",
+    ":automergePatch",
     "helpers:pinGitHubActionDigests"
   ],
   "platform": "github",
@@ -25,6 +21,9 @@
   "pre-commit": {
     "enabled": true
   },
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageExtra": "to {{newVersion}}",
+  "commitMessageSuffix": "",
   "flux": {
     "fileMatch": ["kubernetes/.+\\.ya?ml$"]
   },
@@ -61,5 +60,194 @@
       "datasourceTemplate": "docker",
       "versioningTemplate": "redhat"
     }
+  ],
+  "packageRules": [
+    {
+      "description": "Auto merge container digests",
+      "matchDatasources": ["docker"],
+      "automerge": true,
+      "ignoreTests": true,
+      "automergeType": "branch",
+      "platformAutomerge": true,
+      "platformCommit": true,
+      "matchUpdateTypes": ["digest"],
+      "matchPackagePatterns": ["ghcr.io/bjw-s", "ghcr.io/onedr0p"]
+    },
+    {
+      "description": "Auto merge GitHub Actions",
+      "matchManagers": ["github-actions"],
+      "matchDatasources": ["github-tags"],
+      "automerge": true,
+      "automergeType": "branch",
+      "platformAutomerge": true,
+      "platformCommit": true,
+      "ignoreTests": true,
+      "matchUpdateTypes": ["minor", "patch"]
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "labels": ["type/major"]
+    },
+    {
+      "matchUpdateTypes": ["minor"],
+      "labels": ["type/minor"]
+    },
+    {
+      "matchUpdateTypes": ["patch"],
+      "labels": ["type/patch"]
+    },
+    {
+      "matchDatasources": ["docker"],
+      "addLabels": ["renovate/container"]
+    },
+    {
+      "matchDatasources": ["helm"],
+      "addLabels": ["renovate/helm"]
+    },
+    {
+      "matchDatasources": ["galaxy", "galaxy-collection"],
+      "addLabels": ["renovate/ansible"]
+    },
+    {
+      "matchDatasources": ["terraform-provider"],
+      "addLabels": ["renovate/terraform"]
+    },
+    {
+      "matchDatasources": ["github-releases", "github-tags"],
+      "addLabels": ["renovate/github-release"]
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "addLabels": ["renovate/github-action"]
+    },
+    {
+      "description": "Flux images and tags",
+      "groupName": "Flux",
+      "matchPackagePatterns": ["flux"],
+      "matchDatasources": ["docker", "github-tags"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      },
+      "separateMinorPatch": true
+    },
+    {
+      "matchDatasources": ["helm"],
+      "commitMessageTopic": "chart {{depName}}"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "commitMessageTopic": "image {{depName}}"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["major"],
+      "commitMessagePrefix": "feat(container)!: "
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["minor"],
+      "semanticCommitType": "feat",
+      "semanticCommitScope": "container"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["patch"],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "container"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["digest"],
+      "semanticCommitType": "chore",
+      "semanticCommitScope": "container"
+    },
+    {
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["major"],
+      "commitMessagePrefix": "feat(helm)!: "
+    },
+    {
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["minor"],
+      "semanticCommitType": "feat",
+      "semanticCommitScope": "helm"
+    },
+
+    {
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["patch"],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "helm"
+    },
+    {
+      "matchDatasources": ["galaxy", "galaxy-collection"],
+      "matchUpdateTypes": ["major"],
+      "commitMessagePrefix": "feat(ansible)!: "
+    },
+    {
+      "matchDatasources": ["galaxy", "galaxy-collection"],
+      "matchUpdateTypes": ["minor"],
+      "semanticCommitType": "feat",
+      "semanticCommitScope": "ansible"
+    },
+
+    {
+      "matchDatasources": ["galaxy", "galaxy-collection"],
+      "matchUpdateTypes": ["patch"],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "ansible"
+    },
+    {
+      "matchDatasources": ["terraform-provider"],
+      "matchUpdateTypes": ["major"],
+      "commitMessagePrefix": "feat(terraform)!: "
+    },
+    {
+      "matchDatasources": ["terraform-provider"],
+      "matchUpdateTypes": ["minor"],
+      "semanticCommitType": "feat",
+      "semanticCommitScope": "terraform"
+    },
+    {
+      "matchDatasources": ["terraform-provider"],
+      "matchUpdateTypes": ["patch"],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "terraform"
+    },
+    {
+      "matchDatasources": ["github-releases", "github-tags"],
+      "matchUpdateTypes": ["major"],
+      "commitMessagePrefix": "feat(github-release)!: "
+    },
+    {
+      "matchDatasources": ["github-releases", "github-tags"],
+      "matchUpdateTypes": ["minor"],
+      "semanticCommitType": "feat",
+      "semanticCommitScope": "github-release"
+    },
+    {
+      "matchDatasources": ["github-releases", "github-tags"],
+      "matchUpdateTypes": ["patch"],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "github-release"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["major"],
+      "commitMessagePrefix": "feat(github-action)!: "
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["minor"],
+      "semanticCommitType": "feat",
+      "semanticCommitScope": "github-action"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["patch"],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "github-action"
+    }
   ]
+
 }
