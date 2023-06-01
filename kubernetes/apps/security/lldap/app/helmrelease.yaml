@@ -31,7 +31,10 @@ spec:
       - name: TZ
         value: "${TIMEZONE}"
       - name: LLDAP_BASE_DN
-        value: "dc=home,dc=arpa"
+        valueFrom:
+          secretKeyRef:
+            name: lldap-secrets
+            key: base_dn
       - name: LLDAP_USER_PASS
         valueFrom:
           secretKeyRef:
