@@ -43,6 +43,7 @@ spec:
           - flux-system
           - monitoring
           - networking
+          - security
           - storage
     ingress:
       main:
