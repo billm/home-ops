@@ -28,23 +28,10 @@ spec:
       repository: docker.io/nitnelave/lldap
       tag: latest
     env:
-      - name: TZ
-        value: "${TIMEZONE}"
-      - name: LLDAP_BASE_DN
-        valueFrom:
-          secretKeyRef:
-            name: lldap-secrets
-            key: base_dn
-      - name: LLDAP_USER_PASS
-        valueFrom:
-          secretKeyRef:
-            name: lldap-secrets
-            key: password
-      - name: LLDAP_JWT_SECRET
-        valueFrom:
-          secretKeyRef:
-            name: lldap-secrets
-            key: jwt-secret
+      TZ: "${TIMEZONE}"
+    envFrom:
+      - secretRef:
+          name: lldap-secrets
     service:
       main:
         type: LoadBalancer
