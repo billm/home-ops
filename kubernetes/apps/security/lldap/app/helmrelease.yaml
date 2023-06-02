@@ -28,6 +28,11 @@ spec:
       tag: latest
     env:
       TZ: "${TIMEZONE}"
+      LLDAP_HTTP_URL: "https://ldap.${SECRET_DOMAIN}"
+      LLDAP_SMTP_OPTIONS__SERVER: "mail-relay.networking.svc.cluster.local"
+      LLDAP_SMTP_OPTIONS__PORT: "25"
+      LLDAP_SMTP_OPTIONS__FROM: "Infrastructure <infrastructure@${SECRET_SMTP_DOMAIN}>"
+      LLDAP_SMTP_OPTIONS__REPLY_TO: "Do not reply <noreply@${SECRET_SMTP_DOMAIN}>"
     envFrom:
       - secretRef:
           name: lldap-secrets
