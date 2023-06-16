@@ -66,9 +66,11 @@
       "description": "Auto merge container digests",
       "matchDatasources": ["docker"],
       "automerge": true,
+      "extends": [ "schedule:automergeDaily" ]
       "ignoreTests": true,
-      "automergeType": "branch",
+      "automergeType": "pr",
       "platformAutomerge": true,
+      "assignAutomerge": false,
       "platformCommit": true,
       "matchUpdateTypes": ["digest"],
       "matchPackagePatterns": ["ghcr.io/bjw-s", "ghcr.io/onedr0p"]
@@ -78,11 +80,27 @@
       "matchManagers": ["github-actions"],
       "matchDatasources": ["github-tags"],
       "automerge": true,
-      "automergeType": "branch",
+      "extends": [ "schedule:automergeDaily" ]
+      "automergeType": "pr",
       "platformAutomerge": true,
       "platformCommit": true,
+      "assignAutomerge": false,
       "ignoreTests": true,
       "matchUpdateTypes": ["minor", "patch"]
+    },
+    {
+      "description": "Auto merge renovatebot",
+      "matchManagers": ["github-actions"],
+      "matchDatasources": ["github-tags"],
+      "automerge": true,
+      "extends": [ "schedule:automergeDaily" ]
+      "automergeType": "pr",
+      "platformAutomerge": true,
+      "assignAutomerge": false,
+      "platformCommit": true,
+      "ignoreTests": true,
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackagePatterns": ["renovatebot/pre-commit-hooks"]
     },
     {
       "matchUpdateTypes": ["major"],
