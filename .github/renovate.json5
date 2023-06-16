@@ -66,7 +66,7 @@
       "description": "Auto merge container digests",
       "matchDatasources": ["docker"],
       "automerge": true,
-      "extends": [ "schedule:automergeDaily" ]
+      "extends": [ "schedule:automergeDaily" ],
       "ignoreTests": true,
       "automergeType": "pr",
       "platformAutomerge": true,
@@ -80,7 +80,7 @@
       "matchManagers": ["github-actions"],
       "matchDatasources": ["github-tags"],
       "automerge": true,
-      "extends": [ "schedule:automergeDaily" ]
+      "extends": [ "schedule:automergeDaily" ],
       "automergeType": "pr",
       "platformAutomerge": true,
       "platformCommit": true,
@@ -93,7 +93,7 @@
       "matchManagers": ["github-actions"],
       "matchDatasources": ["github-tags"],
       "automerge": true,
-      "extends": [ "schedule:automergeDaily" ]
+      "extends": [ "schedule:automergeDaily" ],
       "automergeType": "pr",
       "platformAutomerge": true,
       "assignAutomerge": false,
