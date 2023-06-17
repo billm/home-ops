@@ -93,7 +93,7 @@
       "matchManagers": ["github-actions"],
       "matchDatasources": ["github-tags"],
       "automerge": true,
-      "extends": [ "schedule:automergeDaily" ],
+      "extends": [ "schedule:automergeDaily", "automergeMinor" ],
       "automergeType": "pr",
       "platformAutomerge": true,
       "assignAutomerge": false,
