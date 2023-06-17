@@ -90,17 +90,16 @@
     },
     {
       "description": "Auto merge renovatebot",
-      "matchManagers": ["github-actions"],
       "matchDatasources": ["github-tags"],
       "automerge": true,
-      "extends": [ "schedule:automergeDaily", "automergeMinor" ],
+      "extends": [ "schedule:automergeDaily" ],
       "automergeType": "pr",
       "platformAutomerge": true,
       "assignAutomerge": false,
       "platformCommit": true,
       "ignoreTests": true,
       "matchUpdateTypes": ["minor", "patch"],
-      "matchPackagePatterns": ["renovatebot/pre-commit-hooks"]
+      "matchPackageNames": ["renovatebot/pre-commit-hooks"]
     },
     {
       "matchUpdateTypes": ["major"],
